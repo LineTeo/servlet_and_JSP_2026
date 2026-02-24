@@ -54,6 +54,7 @@ public class servletTry extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
+        out.println("<p>2026/9/5～2026/2/20までの献立</p>");
         out.println("<form method='post' action='/example/Yattemiru'>");
         out.println("日付: <input type=\"date\" name=\"date\">"); 
 //        out.println("日付: <input type='text' name='date' placeholder='例: 1月1日'>"); 
@@ -87,6 +88,7 @@ public class servletTry extends HttpServlet {
         response.setContentType("text/html; charset=UTF-8");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
+        out.println("<p>2026/9/5～2026/2/20までの献立</p>");
         out.println("<form method='post' action='/example/Yattemiru'>");
         out.println("日付: <input type=\"date\" name=\"date\">"); 
         out.println("<button type='submit'>検索</button>");
