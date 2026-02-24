@@ -42,8 +42,8 @@ public class CityCodeLoader {
                 line = line.replace("\uFEFF", "");
                 String[] values = line.split(",");
                 if (values.length >= 2) {
-                    String cityName = values[1].trim();
-                    String areaCode = values[0].trim();
+                    String cityName = values[1].trim();	// csvファイルは　"コード,市町村名" となっているが、mapデータでは
+                    String areaCode = values[0].trim();	// 市町村名をキーとするため、逆順で読み込んでいる
                     map.put(cityName, areaCode);
                 }
             }
