@@ -80,6 +80,12 @@ public class PopulationServlet extends HttpServlet {
         out.println("<title>市区町村 人口検索 - 結果</title></head><body>");
         out.println("<h2>市区町村 人口検索</h2>");
 
+        out.println("<h2>市区町村 人口検索</h2>");
+        out.println("<p>市区町村名を入力してください（例: 札幌市、那覇市）</p>");
+        out.println("<form method='post' action='population'>");
+        out.println("  <input type='text' name='cityName' size='20' placeholder='例: 札幌市'>");
+        out.println("  <button type='submit'>検索</button><br>");
+
         // --- 入力チェック ---
         if (cityName == null || cityName.trim().isEmpty()) {
             out.println("<p style='color:red;'>市区町村名を入力してください。</p>");
