@@ -79,8 +79,6 @@ public class PopulationServlet extends HttpServlet {
         out.println("<html lang='ja'><head><meta charset='UTF-8'>");
         out.println("<title>市区町村 人口検索 - 結果</title></head><body>");
         out.println("<h2>市区町村 人口検索</h2>");
-
-        out.println("<h2>市区町村 人口検索</h2>");
         out.println("<p>市区町村名を入力してください（例: 札幌市、那覇市）</p>");
         out.println("<form method='post' action='population'>");
         out.println("  <input type='text' name='cityName' size='20' placeholder='例: 札幌市'>");
