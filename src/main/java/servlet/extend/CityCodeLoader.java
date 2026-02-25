@@ -11,7 +11,9 @@ import jakarta.servlet.ServletContext;
 
 /**
  * citycode.csv を読み込み、市区町村名 → areaコード(5桁) の Map を生成するクラス。
- * CSVフォーマット: 市区町村名,areaコード
+ * CSVフォーマット	: 市区町村名,areaコード
+ * areaコード		: 数字5桁, 左側2桁は都道府県番号、右側3桁が都道府県ごとの通し番号
+ * 追加機能として、市町村名をキーとして都道府県名を得る　getPref()メソッドを追加
  */
 public class CityCodeLoader {
 
@@ -52,5 +54,23 @@ public class CityCodeLoader {
         }
 
         return map;
+    }
+    public static String getPrev(Map<String, String> map, String cityName) {
+
+    	String prefName = "";
+    	
+    	// 市町村名から都道府県コードを取得
+    	String cityCode = map.get(cityName);
+    	String prefCode = cityCode.substring(0,2) + "000";
+    	
+    	// 都道府県コードから都道府県名を取得
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+        	if (entry.getValue().equals(prefCode) && cityCode != prefCode) {
+        		prefName = entry.getKey();
+        		break;
+        	}
+        }
+        
+        return prefName;
     }
 }

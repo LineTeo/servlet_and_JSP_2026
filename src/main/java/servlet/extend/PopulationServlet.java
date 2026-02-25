@@ -19,7 +19,7 @@ public class PopulationServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /** 市区町村名 → areaコード のマップ（init()で一度だけ初期化） */
-    private Map<String, String> cityCodeMap;
+    private Map<String, String> cityCodeMap,PrefMap;
 
     /** e-Stat APIクライアント */
     private EStatApiClient apiClient;
@@ -37,6 +37,7 @@ public class PopulationServlet extends HttpServlet {
             System.err.println("[PopulationServlet] cityCodeMap が空です。citycode.csv を確認してください。");
         } else {
             System.out.println("[PopulationServlet] cityCodeMap 読み込み完了: " + cityCodeMap.size() + " 件");
+            
         }
     }
 
@@ -119,7 +120,7 @@ public class PopulationServlet extends HttpServlet {
         // 人口を3桁カンマ区切りにフォーマット
         String formattedPop = NumberFormat.getNumberInstance(Locale.JAPAN).format(population.get());
 
-        out.println("<h3>【" + escapeHtml(cityName) + "】の人口（令和２年国勢調査）</h3>");
+        out.println("<h3>【" + CityCodeLoader.getPrev(cityCodeMap,cityName) + escapeHtml(cityName) + "】の人口（令和２年国勢調査）</h3>");
         out.println("<p>総人口：<strong>" + formattedPop + " 人</strong></p>");
 //        printBackLink(out);
         out.println("</body></html>");
@@ -129,12 +130,15 @@ public class PopulationServlet extends HttpServlet {
     // ヘルパーメソッド
     // -----------------------------------------------------------------------
 
-      /** 戻るリンクを出力する */  //常にフォームを表示するように変更したことでここの部分は廃止
-
+    /** 戻るリンクを出力する */  //常にフォームを表示するように変更したことでここの部分は廃止
     /*    private void printBackLink(PrintWriter out) {
         out.println("<br><a href='population'>← 検索に戻る</a>");
     }
      */
+    
+    /** レスポンスに都道府県
+	 * XSS: クロスサイトスクリプティング
+
     
     /** HTMLエスケープ（XSS対策）
 	 * XSS: クロスサイトスクリプティング
@@ -156,4 +160,6 @@ public class PopulationServlet extends HttpServlet {
         		.replace("'", "&#39;"); // これを追加！
     }
 
+    
+    
 }
