@@ -77,25 +77,30 @@ public class PopulationServlet extends HttpServlet {
 
         out.println("<!DOCTYPE html>");
         out.println("<html lang='ja'><head><meta charset='UTF-8'>");
-        out.println("<title>市区町村 人口検索 - 結果</title></head><body>");
+        out.println("<title>市区町村 人口検索</title></head><body>");
         out.println("<h2>市区町村 人口検索</h2>");
+        out.println("<p>市区町村名を入力してください（例: 札幌市、那覇市）</p>");
+        out.println("<form method='post' action='population'>");
+        out.println("  <input type='text' name='cityName' size='20' placeholder='例: 札幌市'>");
+        out.println("  <button type='submit'>検索</button>");
+        out.println("</form>");
 
-        // --- 入力チェック ---
-        if (cityName == null || cityName.trim().isEmpty()) {
+        // --- 入力チェック ---　Geminiの提案で　trim()→strip()に変更
+        if (cityName == null || cityName.strip().isEmpty()) {
             out.println("<p style='color:red;'>市区町村名を入力してください。</p>");
-            printBackLink(out);
+//            printBackLink(out);
             out.println("</body></html>");
             return;
         }
 
-        cityName = cityName.trim();
+        cityName = cityName.strip();
 
         // --- CSVマップからareaコードを取得 ---
         String areaCode = cityCodeMap.get(cityName);
         if (areaCode == null) {
             out.println("<p style='color:red;'>「" + escapeHtml(cityName) + "」に該当する市区町村が見つかりませんでした。</p>");
             out.println("<p>市区町村名は正式名称で入力してください（例: 札幌市、中央区 など）</p>");
-            printBackLink(out);
+//            printBackLink(out);
             out.println("</body></html>");
             return;
         }
@@ -105,7 +110,7 @@ public class PopulationServlet extends HttpServlet {
 
         if (population.isEmpty()) {
             out.println("<p style='color:red;'>データの取得に失敗しました。しばらく後に再試行してください。</p>");
-            printBackLink(out);
+//            printBackLink(out);
             out.println("</body></html>");
             return;
         }
@@ -116,7 +121,7 @@ public class PopulationServlet extends HttpServlet {
 
         out.println("<h3>【" + escapeHtml(cityName) + "】の人口（令和２年国勢調査）</h3>");
         out.println("<p>総人口：<strong>" + formattedPop + " 人</strong></p>");
-        printBackLink(out);
+//        printBackLink(out);
         out.println("</body></html>");
     }
 
@@ -124,16 +129,31 @@ public class PopulationServlet extends HttpServlet {
     // ヘルパーメソッド
     // -----------------------------------------------------------------------
 
-    /** 戻るリンクを出力する */
-    private void printBackLink(PrintWriter out) {
+      /** 戻るリンクを出力する */  //常にフォームを表示するように変更したことでここの部分は廃止
+
+    /*    private void printBackLink(PrintWriter out) {
         out.println("<br><a href='population'>← 検索に戻る</a>");
     }
+     */
+    
+    /** HTMLエスケープ（XSS対策）
+	 * XSS: クロスサイトスクリプティング
+     * Cludeが自動で付加（テキスト入力時には考慮が必要）
+     * Geminiに解説してもらい、シングルクォーテーションへの対策を追加
+     * 
+     * さらにライブラリの使用を推奨された
+     * // StringEscapeUtils を使う
+     * import org.apache.commons.text.StringEscapeUtils;
+     * // 使うとき
+     * out.println("「" + StringEscapeUtils.escapeHtml4(cityName) + "」");
+     */
 
-    /** HTMLエスケープ（XSS対策） */
     private String escapeHtml(String s) {
         return s.replace("&", "&amp;")
                 .replace("<", "&lt;")
                 .replace(">", "&gt;")
-                .replace("\"", "&quot;");
+                .replace("\"", "&quot;")
+        		.replace("'", "&#39;"); // これを追加！
     }
+
 }
