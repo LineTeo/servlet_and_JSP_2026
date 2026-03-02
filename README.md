@@ -18,6 +18,11 @@
 | **表示 (`doGet`)** | 入力画面 | 日付入力フォームと検索ボタンをブラウザに表示 |
 | **実行 (`doPost`)** | 検索・出力 | 指定された日付をキーにデータを抽出、結果をWebページに反映 |
 
+### 🎯 アップデート(3/1)
+JPS研修後の演習として、HTML部分をJSPにforwardするコードにアップデートした
+|本体プログラム|servletJSP.jaba|
+|JSP|servletJSP.jsp|
+
 <br><br>
 ## 演習2：`@WebServlet("/population")`(PopulationServlet.java)
 
