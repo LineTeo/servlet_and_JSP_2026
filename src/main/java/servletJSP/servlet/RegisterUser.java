@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import servletJSP.model.RegisterUserLogic;
+import servletJSP.model.User;
 
 @WebServlet("/RegisterUser")
 public class RegisterUser extends HttpServlet {
@@ -57,9 +58,10 @@ public class RegisterUser extends HttpServlet {
     String id = request.getParameter("id");
     String name = request.getParameter("name");
     String pass = request.getParameter("pass");
+    String profile = request.getParameter("profile");
 
     // 登録するユーザーの情報を設定
-    User registerUser = new User(id, name, pass);
+    User registerUser = new User(id, name, pass, profile);
 
     // セッションスコープに登録ユーザーを保存
     HttpSession session = request.getSession();

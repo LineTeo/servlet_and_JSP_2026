@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8" %>
-<%@ page import="model.User" %>
+<%@ page import="servletJSP.model.User" %>
 <%
 User registerUser = (User) session.getAttribute("registerUser");
 %>
