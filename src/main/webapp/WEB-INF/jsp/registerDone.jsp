@@ -8,6 +8,6 @@
 </head>
 <body>
 <p>登録完了しました</p>
-<a href="UserLoginr">戻る</a>
+<a href="UserLogin">ログイン画面へ</a>
 </body>
 </html>

@@ -38,7 +38,8 @@ public class RegisterUser extends HttpServlet {
 
       // 登録処理の呼び出し
       RegisterUserLogic logic = new RegisterUserLogic();
-      logic.execute(registerUser);
+      logic.execute(registerUser, getServletContext());
+      //      logic.execute(registerUser);
 
       // 不要となったセッションスコープ内のインスタンスを削除
       session.removeAttribute("registerUser");
@@ -58,7 +59,7 @@ public class RegisterUser extends HttpServlet {
     String id = request.getParameter("id");
     String name = request.getParameter("name");
     String pass = request.getParameter("pass");
-    String profile = request.getParameter("profile");
+    String profile = request.getParameter("profile");    
 
     // 登録するユーザーの情報を設定
     User registerUser = new User(id, name, pass, profile);

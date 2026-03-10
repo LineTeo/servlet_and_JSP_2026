@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ユーザー登録</title>
+<title>ユーザーログイン</title>
 <style>
   /* 各入力行のスタイル */
   .form-item {
@@ -34,8 +34,8 @@
 
 </head>
 <body>
-<H1> ユーザー登録　</H1>
-<form action="RegisterUser" method="post">
+<H1> ユーザーログイン　</H1>
+<form action="UserLogin" method="post">
   <div class="form-item">
     <label for="id">ログインID：</label>
     <input type="text" id="id" name="id">
@@ -47,19 +47,11 @@
   </div>
 
   <div class="form-item">
-    <label for="name">名前：</label>
-    <input type="text" id="name" name="name">
-  </div>
-
-  <div class="form-item align-top">
-    <label for="intro">自己紹介：</label>
-    <textarea id="intro" name="profile" class="large-field"></textarea>
-  </div>
-
-  <div class="form-item">
-    <label></label> <input type="submit" value="確認">
+    <label></label> <input type="submit" value="ログイン">
   </div>
 </form>
+
+<a href="RegisterUser">戻る</a>
 
 </body>
 </html>

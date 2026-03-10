@@ -8,16 +8,16 @@ User registerUser = (User) session.getAttribute("registerUser");
 <html>
 <head>
 <meta charset="UTF-8">
-<title>ユーザー登録</title>
+<title>ユーザー情報</title>
 </head>
 <body>
-<p>下記のユーザーを登録します</p>
+<p><%= registerUser.getName() %>さんの登録情報</p>
 <p>
 ログインID：<%= registerUser.getId() %><br>
-名前：<%= registerUser.getName() %><br>
-自己紹介：<%= registerUser.getProfile() %><br>
+パスワード：************<br>
+自己紹介文：<%= registerUser.getProfile() %><br>
 </p></p>
-<a href="RegisterUser">戻る</a>
-<a href="RegisterUser?action=done">登録</a>
+<a href="UserLogin?action=change">登録情報変更</a>
+<a href="UserLogin?action=done">ログアウト</a>
 </body>
 </html>
