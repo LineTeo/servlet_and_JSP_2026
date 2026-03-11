@@ -10,9 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import servletJSP.model.LoginLogic;
-import servletJSP.model.RegisterUserLogic;
 import servletJSP.model.User;
+import servletJSP.model.UserDAO;
 
 @WebServlet("/UserLogin")
 public class UserLogin extends HttpServlet {
@@ -33,17 +32,13 @@ public class UserLogin extends HttpServlet {
 		    else if (action.equals("done")) {
 		      // セッションスコープに保存された登録ユーザ
 		      HttpSession session = request.getSession();
-		      User loginUser = (User) session.getAttribute("loginUser");
-
-		      // 登録処理の呼び出し
-		      RegisterUserLogic logic = new RegisterUserLogic();
-		      logic.execute(loginUser,getServletContext());
 
 		      // 不要となったセッションスコープ内のインスタンスを削除
 		      session.removeAttribute("registerUser");
+		      session.removeAttribute("errResponse");
 
-		      // 登録後のフォワード先を設定
-		      forwardPath = "WEB-INF/jsp/registerDone.jsp";
+		      // ログイン画面へ
+		      forwardPath = "WEB-INF/jsp/loginForm.jsp";
 		    }
 
 		    // 設定されたフォワード先にフォワード
@@ -54,24 +49,22 @@ public class UserLogin extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         String id = request.getParameter("id");
         String pass = request.getParameter("pass");
-
-        // 入力情報からUserインスタンスを生成（名前は空でもOK）
-        User user = new User(id, "", pass, "");
-        
+                
         // ログイン判定
-        LoginLogic logic = new LoginLogic();
-        User loginUser = logic.execute(user, getServletContext());
-
+//        LoginLogic logic = new LoginLogic();
+        UserDAO dao = new UserDAO(getServletContext());
+//        User loginUser = logic.execute(user, getServletContext());
+        User loginUser = dao.login(id, pass);
+        HttpSession session = request.getSession();
+        
         if (loginUser != null) {
             // ログイン成功：セッションにユーザー情報を保存してメイン画面へ
-            HttpSession session = request.getSession();
             session.setAttribute("loginUser", loginUser);
-		    RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/main.jsp");
-		    dispatcher.forward(request, response);
+		    request.getRequestDispatcher("WEB-INF/jsp/main.jsp").forward(request, response);
         } else {
             // ログイン失敗：ログイン画面へリダイレクト
-		    RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/loginForm.jsp");
-		    dispatcher.forward(request, response);
+            session.setAttribute("errResponse", 1);
+		    request.getRequestDispatcher("WEB-INF/jsp/loginForm.jsp").forward(request, response);
         }
     }
 }

@@ -1,5 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8" %>
+<%@ page import="servletJSP.model.User" %>
+
+<%
+    // sessionから取得（この時点では Object 型）
+    Object errObj = session.getAttribute("errResponse");
+    
+    // nullチェックをしてから int に変換する
+    int errType = 0; 
+    if (errObj != null) {
+        errType = (int) errObj;
+    }
+%>
+    
+    
+    
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,7 +67,24 @@
   </div>
 </form>
 
-<a href="RegisterUser">戻る</a>
+<a href="RegisterUser">ユーザー登録</a>
+<hr>
+    <%
+	System.out.println(errType);                	
+
+        switch(errType){
+		    case 1: %>
+	            <p>IDまたはパスワードが違います</p>
+				<% break;
+		    case 2: %>
+            <p></p>
+				<% break;
+		    case 3: %>
+            <p></p>
+				<% break;
+		    default:			
+        }
+    %>
 
 </body>
 </html>

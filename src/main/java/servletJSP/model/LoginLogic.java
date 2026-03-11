@@ -1,15 +1,15 @@
 package servletJSP.model;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import jakarta.servlet.ServletContext;
 
 public class LoginLogic {
-    public User execute(String id, String pass, ServletContext context) {
-        // 保存先ファイルのパス（登録時に保存した場所と同じ）
-    	UserDAO dao = new UserDAO();
-    	return dao.login(id,pass,context);
-    	
-    	
-/*        String dataPath = context.getRealPath("WEB-INF/recordData.csv");
+    public User execute(User user, ServletContext context) {
+        // 保存先ファイルのパス（登録時に保存した場所と同じ）    	
+        String dataPath = context.getRealPath("WEB-INF/recordData.csv");
         
         try (BufferedReader br = new BufferedReader(new FileReader(dataPath))) {
             String line;
@@ -32,7 +32,6 @@ public class LoginLogic {
             e.printStackTrace();
         }
         return null; // 見つからなかった
-*/
     }
 
 }

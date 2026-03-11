@@ -2,7 +2,7 @@
     pageEncoding="UTF-8" %>
 <%@ page import="servletJSP.model.User" %>
 <%
-User registerUser = (User) session.getAttribute("registerUser");
+User registerUser = (User) session.getAttribute("loginUser");
 %>
 <!DOCTYPE html>
 <html>
@@ -17,7 +17,6 @@ User registerUser = (User) session.getAttribute("registerUser");
 パスワード：************<br>
 自己紹介文：<%= registerUser.getProfile() %><br>
 </p></p>
-<a href="UserLogin?action=change">登録情報変更</a>
 <a href="UserLogin?action=done">ログアウト</a>
 </body>
 </html>

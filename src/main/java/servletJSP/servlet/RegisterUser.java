@@ -2,7 +2,6 @@ package servletJSP.servlet;
 
 import java.io.IOException;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,8 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-import servletJSP.model.RegisterUserLogic;
 import servletJSP.model.User;
+import servletJSP.model.UserDAO;
 
 @WebServlet("/RegisterUser")
 public class RegisterUser extends HttpServlet {
@@ -37,10 +36,16 @@ public class RegisterUser extends HttpServlet {
       User registerUser = (User) session.getAttribute("registerUser");
 
       // 登録処理の呼び出し
-      RegisterUserLogic logic = new RegisterUserLogic();
-      logic.execute(registerUser, getServletContext());
+      UserDAO dao = new UserDAO(getServletContext());
+      
+      //      RegisterUserLogic logic = new RegisterUserLogic();
+//      logic.execute(registerUser, getServletContext());
       //      logic.execute(registerUser);
-
+      dao.insert(registerUser);
+      
+      
+      
+      
       // 不要となったセッションスコープ内のインスタンスを削除
       session.removeAttribute("registerUser");
 
@@ -49,8 +54,7 @@ public class RegisterUser extends HttpServlet {
     }
 
     // 設定されたフォワード先にフォワード
-    RequestDispatcher dispatcher = request.getRequestDispatcher(forwardPath);
-    dispatcher.forward(request, response);
+    request.getRequestDispatcher(forwardPath).forward(request, response);
   }
 
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -62,14 +66,26 @@ public class RegisterUser extends HttpServlet {
     String profile = request.getParameter("profile");    
 
     // 登録するユーザーの情報を設定
-    User registerUser = new User(id, name, pass, profile);
-
-    // セッションスコープに登録ユーザーを保存
+    User registerUser = new User(id, pass, name, profile);
+    // 登録処理の呼び出し
+    UserDAO dao = new UserDAO(getServletContext());
+    
     HttpSession session = request.getSession();
     session.setAttribute("registerUser", registerUser);
+    
+    if (dao.exists(id)) {
+        // セッションスコープに登録ユーザーを保存
+        session.setAttribute("errResponse", 1);
+    	
+        // フォワード
+        request.getRequestDispatcher("WEB-INF/jsp/registerForm.jsp").forward(request, response);      	
+    }else {
+        // セッションスコープに登録ユーザーを保存
+        session.setAttribute("registerUser", registerUser);
+        session.setAttribute("errResponse", 0);
 
-    // フォワード
-    RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/registerConfirm.jsp");
-    dispatcher.forward(request, response);
+        // フォワード
+        request.getRequestDispatcher("WEB-INF/jsp/registerConfirm.jsp").forward(request, response);
+    }
   }
 }

@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
     pageEncoding="UTF-8" %>
+<%@ page import="servletJSP.model.User" %>
+
+<% User registerUser = (User) session.getAttribute("registerUser"); %>
+<%
+    // sessionから取得（この時点では Object 型）
+    Object errObj = session.getAttribute("errResponse");
+    
+    // nullチェックをしてから int に変換する
+    int errType = 0; 
+    if (errObj != null) {
+        errType = (int) errObj;
+    }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -60,6 +73,26 @@
     <label></label> <input type="submit" value="確認">
   </div>
 </form>
+<a href="UserLogin">ログイン画面へ</a>
+
+<hr>
+
+    <% if (registerUser != null) {
+        switch(errType){
+		    case 1: %>
+	            <p>登録済みのIDです</p>
+      			<% session.removeAttribute("registerUser");
+      			session.removeAttribute("errType");
+				break;
+		    case 2: %>
+            <p></p>
+				<% break;
+		    case 3: %>
+            <p></p>
+				<% break;
+		    default:			
+        }
+    } %>
 
 </body>
 </html>
